@@ -8,7 +8,6 @@ type EditableSpanPropsType = {
 
 }
 
-
 function EditableSpan(props: EditableSpanPropsType) {
 
 
@@ -35,14 +34,13 @@ function EditableSpan(props: EditableSpanPropsType) {
     return (
         editMode
             ? <TextField
+                variant={"standard"}
                 value={title}
                 autoFocus
                 onBlur={offEditMode}
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressEditMode}
             />
-
-
             : <span onDoubleClick={onEditMode}>{props.title}</span>
 
     );
