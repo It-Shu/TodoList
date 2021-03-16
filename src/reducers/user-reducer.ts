@@ -27,6 +27,6 @@ export const userReducer = (state: StateType, action: ActionType) => {
                 name: state.name = 'Viktor'
             }
         default:
-            throw new Error("I don't understand this type")
+           return state
     }
 }
