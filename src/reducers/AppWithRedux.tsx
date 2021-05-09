@@ -1,6 +1,6 @@
 import React, {useReducer, useState} from 'react';
 // import './App.css';
-import {Todolist} from "../Todolist";
+import {Todolist} from "../TodoList";
 import {v1} from "uuid";
 import AddItemForm from "../AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
@@ -40,8 +40,8 @@ function AppWithRedux() {
 
     //  BLL
 
-    const todoListID1 = v1()
-    const todoListID2 = v1()
+    // const todoListID1 = v1()
+    // const todoListID2 = v1()
     /*
         const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
             {id: todoListID1, title: "What to learn", filter: "all"},
