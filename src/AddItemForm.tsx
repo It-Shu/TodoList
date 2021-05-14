@@ -8,8 +8,7 @@ type AddItemFormPropsType = {
     title: string
 }
 
-function AddItemForm(props: AddItemFormPropsType) {
-
+const  AddItemForm = React.memo ((props: AddItemFormPropsType) => {
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
 
@@ -18,6 +17,7 @@ function AddItemForm(props: AddItemFormPropsType) {
         setError(false);
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        error && setError(false)
         if (e.key === "Enter") addItem();
 
     }
@@ -51,7 +51,7 @@ function AddItemForm(props: AddItemFormPropsType) {
             </IconButton>
         </div>
     );
-};
+});
 
 
 export default AddItemForm;

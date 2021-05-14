@@ -57,13 +57,13 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
             return copyState
         }
         case "CHANGE-STATUS-TASK": {
-            let copyState = {...state}
+           /* let copyState = {...state}
             const todoListTasks = copyState[action.todolistId]
             const task = todoListTasks.find(t => t.id === action.taskId)
             if (task) {
                 task.isDone = action.isDone
-
             }
+            state[action.todolistId] = [...todoListTasks]
             return {
                 ...state,
                 [action.todolistId]: state[action.todolistId].map(task => {
@@ -73,16 +73,25 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
                         return task
                     }
                 })
+            }*/
+            const copyState = {...state}
+            let updateTasksTodoList = copyState[action.todolistId].map(task => task.id === action.taskId
+                ? {...task, isDone: action.isDone}
+                : task)
+            return {
+                ...state,
+                [action.todolistId]: updateTasksTodoList
             }
         }
         case "CHANGE-TITLE-TASK": {
-            let copyState = {...state}
+            /*let copyState = {...state}
             const todoListTasks = copyState[action.todolistId]
 
             const task = todoListTasks.find(t => t.id === action.taskId)
             if (task) {
                 task.title = action.title
             }
+            state[action.taskId] = [...todoListTasks]
             return {
                 ...state,
                 [action.todolistId]: state[action.todolistId].map(task => {
@@ -92,7 +101,12 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
                         return task
                     }
                 })
-            }
+            }*/
+            const copyState = {...state}
+            copyState[action.todolistId] = copyState[action.todolistId].map(task => task.id === action.taskId
+                ? {...task, title: action.title} : task)
+            return copyState
+
         }
         case "ADD-TODOLIST": {
             return {
