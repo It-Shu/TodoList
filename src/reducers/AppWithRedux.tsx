@@ -1,7 +1,5 @@
-import React, {useCallback, useReducer, useState} from 'react';
-// import './App.css';
+import React, {useCallback} from 'react';
 import {Todolist} from "../TodoList";
-import {v1} from "uuid";
 import AddItemForm from "../AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
@@ -10,9 +8,8 @@ import {
     changeTodoListFilterAC,
     changeTodoListTitleAC,
     removeTodoListAC,
-    todoListReducer
 } from "./tl-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 
@@ -37,55 +34,6 @@ export type FilterValuesType = "all" | "active" | "completed";
 
 
 function AppWithRedux() {
-
-    //  BLL
-
-    // const todoListID1 = v1()
-    // const todoListID2 = v1()
-    /*
-        const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
-            {id: todoListID1, title: "What to learn", filter: "all"},
-            {id: todoListID2, title: "What to buy", filter: "all"},
-        ])
-
-        const [tasks, setTasks] = useState<TasksStateType>({
-            [todoListID1]: [
-                {id: v1(), title: "HTML&CSS", isDone: true},
-                {id: v1(), title: "JS", isDone: true},
-                {id: v1(), title: "ReactJS", isDone: false},
-                {id: v1(), title: "Redux", isDone: false},
-                {id: v1(), title: "TypeScript", isDone: false},
-            ],
-            [todoListID2]: [
-                {id: v1(), title: "Milk", isDone: true},
-                {id: v1(), title: "Bread", isDone: true},
-                {id: v1(), title: "Beer", isDone: false},
-                {id: v1(), title: "Meat", isDone: false},
-                {id: v1(), title: "Water", isDone: true},
-            ],
-        })*/
-
-    /*    const [todoLists, dispatchTodoList] = useReducer(todoListReducer,[
-            {id: todoListID1, title: "What to learn", filter: "all"},
-            {id: todoListID2, title: "What to buy", filter: "all"},
-        ])
-
-        const [tasks, dispatchToTasks] = useReducer(tasksReducer,{
-            [todoListID1]: [
-                {id: v1(), title: "HTML&CSS", isDone: true},
-                {id: v1(), title: "JS", isDone: true},
-                {id: v1(), title: "ReactJS", isDone: false},
-                {id: v1(), title: "Redux", isDone: false},
-                {id: v1(), title: "TypeScript", isDone: false},
-            ],
-            [todoListID2]: [
-                {id: v1(), title: "Milk", isDone: true},
-                {id: v1(), title: "Bread", isDone: true},
-                {id: v1(), title: "Beer", isDone: false},
-                {id: v1(), title: "Meat", isDone: false},
-                {id: v1(), title: "Water", isDone: true},
-            ],
-        })*/
 
     const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)

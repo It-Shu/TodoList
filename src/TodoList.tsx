@@ -1,8 +1,8 @@
-import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {FilterValuesType, TaskType} from "./reducers/AppWithRedux";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {Task} from "./Task";
 
@@ -46,7 +46,7 @@ export const Todolist = React.memo((props: PropsTitleType) => {
     if (props.filter === "completed") {
         tasksForTodolist = allTodolistTasks.filter(t => t.isDone)
     }
-// Task component fuction
+// Task component function
     const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.id),[props.removeTask, props.id])
 
     const changeTaskStatus = useCallback ((taskId: string, newIsDoneValue: boolean) => {
