@@ -1,16 +1,16 @@
 import axios from "axios";
 
-type TaskType = {
+export type TaskType = {
     description: string
     title: string
     completed: boolean
-    status: string
-    priority: string
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string
     todoListId: string
-    order: string
+    order: number
     addedDate: string
 }
 
@@ -44,6 +44,21 @@ type ResponseType<T> = {
     resultCode: number
     messages: Array<string>
     data: T
+}
+
+export enum TaskStatuses {
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
 }
 
 const instance = axios.create({

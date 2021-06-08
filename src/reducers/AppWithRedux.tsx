@@ -6,36 +6,37 @@ import {Menu} from "@material-ui/icons";
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC,
-    removeTodoListAC,
+    changeTodoListTitleAC, FilterValuesType,
+    removeTodoListAC, TodolistDomainType,
 } from "./tl-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TasksStateType} from "./tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
+import {TaskStatuses} from "../api/tasks-api";
 
-export type TaskType = {
+/*export type TaskType = {
     id: string
     title: string
-    isDone: boolean
+    status: TaskStatuses
 }
 
 export type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
-}
+}*/
 
 
-export type TasksStateType = {
-    [/*todoListID*/ key: string]: Array<TaskType>
-}
+/*export type TasksStateType = {
+    [/!*todoListID*!/ key: string]: Array<TaskType>
+}*/
 
-export type FilterValuesType = "all" | "active" | "completed";
+/*export type FilterValuesType = "all" | "active" | "completed";*/
 
 
 function AppWithRedux() {
 
-    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
+    const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch();
 
@@ -51,8 +52,8 @@ function AppWithRedux() {
         dispatch(action)
     }, [dispatch])
 
-    const changeStatus = useCallback((taskID: string, isDone: boolean, todoListID: string) => {
-        const action = changeTaskStatusAC(taskID, isDone, todoListID)
+    const changeStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
+        const action = changeTaskStatusAC(taskID, status, todoListID)
         dispatch(action)
     }, [dispatch])
 
