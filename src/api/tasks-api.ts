@@ -61,11 +61,21 @@ export enum TaskPriorities {
     Later
 }
 
+export type UpdateTaskModelType = {
+    title: string
+    description: string
+    completed: boolean
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
-        'API-KEY': '7b707044-71d7-4278-8d6b-08f541ab464d'
+        'API-KEY': '4019c0fb-c87c-4ecc-b1ef-f529cf108901'
     },
 })
 
@@ -83,7 +93,7 @@ export const tasksAPI = {
         return instance.delete<ResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
 
-    updateTasks(todolistId: string, taskId: string, title: string) {
-        return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
+    updateTasks(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+        return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, {model})
     }
 }

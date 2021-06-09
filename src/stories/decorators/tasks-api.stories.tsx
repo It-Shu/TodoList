@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { tasksAPI } from '../../api/tasks-api';
+import {TaskPriorities, tasksAPI, TaskStatuses} from '../../api/tasks-api';
 
 export default {
     title: 'API/tasks'
@@ -50,7 +50,15 @@ export const UpdateTasksTitle = () => {
     useEffect(() => {
         const todolistId = 'e8c5740e-d2ae-4b73-a003-9ff4ac4f48a5';
         const taskId = '3330be2a-24b9-4789-ba88-9f91ad7198ad';
-        tasksAPI.updateTasks(todolistId, taskId, 'MUST-LEARN-EVERY-DAY')
+        tasksAPI.updateTasks(todolistId, taskId, {
+            title: '',
+            description: '',
+            completed: false,
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            deadline: '',
+        })
             .then((res)=>{
                 setState(res.data)
             })

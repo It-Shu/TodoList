@@ -2,6 +2,7 @@ import {v1} from "uuid";
 import {AddTodoListActionType, RemoveTodoListActionType, SetTodolistActionType} from "./tl-reducer";
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
+import {AppRootStateType} from "../state/store";
 
 
 type RemoveTaskACActionType = {
@@ -230,6 +231,32 @@ export const createTaskTC = (title: string, todolistId: string) => {
                 let action = addTaskAC(task)
                 dispatch(action)
             })
+    }
+}
+
+export const updateTaskStatusTC = (status: TaskStatuses, todolistId: string, taskId: string) => {
+    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+
+        const allTasksFromState = getState().tasks;
+        const tasksForCurrentTodolist = allTasksFromState[todolistId];
+        const task = tasksForCurrentTodolist.find(t => {
+            return t.id === taskId
+        })
+
+        if (task) {
+            tasksAPI.updateTasks(todolistId, taskId, {
+                title: task.title,
+                startDate: task.startDate,
+                priority: TaskPriorities.Low,
+                completed: task.completed,
+                description: task.description,
+                deadline: task.deadline,
+                status: status
+            }).then(() => {
+                    let action = changeTaskStatusAC(taskId, status, todolistId)
+                    dispatch(action)
+                })
+        }
     }
 }
 
