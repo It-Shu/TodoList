@@ -10,15 +10,13 @@ import {
     removeTodoListAC, TodolistDomainType,
 } from "./tl-reducer";
 import {
-    addTaskAC,
     changeTaskStatusAC,
-    changeTaskTitleAC, deleteTasksTC, fetchTasksTC,
-    removeTaskAC,
+    changeTaskTitleAC, createTaskTC, deleteTasksTC,
     TasksStateType
 } from "./tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
-import {tasksAPI, TaskStatuses} from "../api/tasks-api";
+import { TaskStatuses} from "../api/tasks-api";
 
 
 function AppWithRedux() {
@@ -34,20 +32,14 @@ function AppWithRedux() {
 
     // functions for tasks
     const removeTask = useCallback((taskID: string, todoListID: string) => {
-       /* const action = removeTaskAC(taskID, todoListID)
-        dispatch(action)*/
-       /* tasksAPI.deleteTasks(todoListID, taskID)
-            .then(()=>{
-                const action = removeTaskAC(taskID, todoListID);
-                dispatch(action)
-            })*/
         dispatch(deleteTasksTC(todoListID, taskID))
     }, [])
 
     const addTasks = useCallback((taskTitle: string, todoListID: string) => {
-        const action = addTaskAC(taskTitle, todoListID)
-        dispatch(action)
-    }, [dispatch])
+       /* const action = addTaskAC(taskTitle, todoListID)
+        dispatch(action)*/
+        dispatch(createTaskTC(taskTitle, todoListID))
+    }, [])
 
     const changeStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
         const action = changeTaskStatusAC(taskID, status, todoListID)

@@ -76,7 +76,7 @@ export const tasksAPI = {
     },
 
     createTasks(todolistId: string, title: string) {
-        return instance.post<ResponseType<{items: Array<TaskType>}>>(`todo-lists/${todolistId}/tasks`, {title})
+        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
     },
 
     deleteTasks(todolistId: string, taskId: string) {
@@ -84,6 +84,6 @@ export const tasksAPI = {
     },
 
     updateTasks(todolistId: string, taskId: string, title: string) {
-        return instance.put<ResponseType<{items: Array<TaskType>}>>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
+        return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
     }
 }
