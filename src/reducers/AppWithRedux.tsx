@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Todolist} from "../TodoList";
 import AddItemForm from "../AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
@@ -6,35 +6,26 @@ import {Menu} from "@material-ui/icons";
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC, FilterValuesType,
+    changeTodoListTitleAC, fetchTodolistsTC, FilterValuesType,
     removeTodoListAC, TodolistDomainType,
 } from "./tl-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TasksStateType} from "./tasks-reducer";
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC, deleteTasksTC, fetchTasksTC,
+    removeTaskAC,
+    TasksStateType
+} from "./tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
-import {TaskStatuses} from "../api/tasks-api";
-
-/*export type TaskType = {
-    id: string
-    title: string
-    status: TaskStatuses
-}
-
-export type TodoListType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}*/
-
-
-/*export type TasksStateType = {
-    [/!*todoListID*!/ key: string]: Array<TaskType>
-}*/
-
-/*export type FilterValuesType = "all" | "active" | "completed";*/
+import {tasksAPI, TaskStatuses} from "../api/tasks-api";
 
 
 function AppWithRedux() {
+
+    useEffect(()=>{
+       dispatch(fetchTodolistsTC())
+    },[])
 
     const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
@@ -43,9 +34,15 @@ function AppWithRedux() {
 
     // functions for tasks
     const removeTask = useCallback((taskID: string, todoListID: string) => {
-        const action = removeTaskAC(taskID, todoListID)
-        dispatch(action)
-    }, [dispatch])
+       /* const action = removeTaskAC(taskID, todoListID)
+        dispatch(action)*/
+       /* tasksAPI.deleteTasks(todoListID, taskID)
+            .then(()=>{
+                const action = removeTaskAC(taskID, todoListID);
+                dispatch(action)
+            })*/
+        dispatch(deleteTasksTC(todoListID, taskID))
+    }, [])
 
     const addTasks = useCallback((taskTitle: string, todoListID: string) => {
         const action = addTaskAC(taskTitle, todoListID)

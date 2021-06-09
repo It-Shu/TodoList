@@ -16,8 +16,8 @@ export type TaskType = {
 
 type GetTasksResponseType = {
     items: Array<TaskType>
-    totalCount: string
-    error: string
+    totalCount: number
+    error: string | null
 }
 
 /*type CreateTasksResponseType = {
@@ -72,7 +72,7 @@ const instance = axios.create({
 export const tasksAPI = {
 
     getTasks(todolistId: string) {
-        return instance.get<Array<GetTasksResponseType>>(`todo-lists/${todolistId}/tasks`)
+        return instance.get<GetTasksResponseType>(`todo-lists/${todolistId}/tasks`)
     },
 
     createTasks(todolistId: string, title: string) {
