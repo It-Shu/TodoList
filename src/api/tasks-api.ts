@@ -94,6 +94,6 @@ export const tasksAPI = {
     },
 
     updateTasks(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, {model})
+        return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
     }
 }

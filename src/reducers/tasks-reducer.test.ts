@@ -1,6 +1,6 @@
 import {
     addTaskAC,
-    changeTaskStatusAC,
+    updateTaskAC,
     changeTaskTitleAC,
     removeTaskAC, TaskDomainType,
     tasksReducer
@@ -168,7 +168,19 @@ test('correct task should be deleted from correct array', () => {
 //2.
 
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC("juice", "todolistId2");
+    const action = addTaskAC({
+        description: '',
+        title: "juice",
+        completed: false,
+        status: 0,
+        priority: 0,
+        startDate: '',
+        deadline: '',
+        id: '123',
+        todoListId: '321',
+        order: 0,
+        addedDate: ''
+    });
 
     const endState = tasksReducer(startState, action)
 
@@ -182,7 +194,7 @@ test('correct task should be added to correct array', () => {
 //3.
 
 test('status of specified task should be changed', () => {
-    const action = changeTaskStatusAC("2", TaskStatuses.New, "todolistId2");
+    const action = updateTaskAC("2", {status: TaskStatuses.New}, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
@@ -193,7 +205,7 @@ test('status of specified task should be changed', () => {
 //4.
 
 test('title of specified task should be changed', () => {
-    const action = changeTaskTitleAC("2", "beer", "todolistId2");
+    const action = updateTaskAC("2", {title: "beer"}, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
@@ -205,7 +217,12 @@ test('title of specified task should be changed', () => {
 
 test('new array should be added when new todolist is added', () => {
 
-    const action = addTodoListAC("new todolist");
+    const action = addTodoListAC({
+        id: '123',
+        addedDate: 'new todolist',
+        order: 0,
+        title: ''
+    });
 
     const endState = tasksReducer(startState, action)
 
