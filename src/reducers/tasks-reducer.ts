@@ -3,6 +3,8 @@ import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskModelType} f
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../state/store";
 import {setAppErrorAC, SetAppErrorType, SetAppStatusType, setStatusAC} from "./app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {AxiosError} from "axios";
 
 
 type RemoveTaskACActionType = {
@@ -198,10 +200,6 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): SetTasks
     return {type: "SET-TASKS", tasks, todolistId}
 }
 
-/*export const AddTodolistAC = (title: string, todolistID: string): AddTodoListActionType => {
-    return {type: "ADD-TODOLIST", title, todolistID}
-}*/
-
 
 // Thunk
 
@@ -246,6 +244,10 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
                 dispatch(setStatusAC('failed'))
             }
         })
+        .catch((error: AxiosError) => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setStatusAC('failed'))
+        })
 }
 
 
@@ -282,10 +284,20 @@ export const updateTaskTC = (domainModel: UpdateDomainTaskModelType, todolistId:
         }
 
         tasksAPI.updateTasks(todolistId, taskId, apiModel)
-            .then(() => {
-                let action = updateTaskAC(taskId, domainModel, todolistId)
-                dispatch(action)
-                dispatch(setStatusAC('succeeded'))
+
+            .then((res) => {
+                if (res.data.resultCode === 0) {
+                    let action = updateTaskAC(taskId, domainModel, todolistId)
+                    dispatch(action)
+                    dispatch(setStatusAC('succeeded'))
+                } else {
+                    dispatch(setAppErrorAC('Some error occurred'))
+                }
+                dispatch(setStatusAC('failed'))
+            })
+            .catch((error: AxiosError) => {
+                dispatch(setAppErrorAC(error.message))
+                dispatch(setStatusAC('failed'))
             })
     }
 }

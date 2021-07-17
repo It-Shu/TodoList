@@ -2,6 +2,7 @@ import {todolistAPI, TodoListType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setAppErrorAC, setStatusAC} from "./app-reducer";
 import { v1 } from "uuid";
+import {AxiosError} from "axios";
 
 
 export type RemoveTodoListActionType = {
@@ -176,6 +177,10 @@ export const createTodolistTC = (title: string) => {
                     }
                     dispatch(setStatusAC('failed'))
                 }
+            })
+            .catch((err: AxiosError)=>{
+                dispatch(setAppErrorAC(err.message))
+                dispatch(setStatusAC('failed'))
             })
     }
 }

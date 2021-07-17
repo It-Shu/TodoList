@@ -121,7 +121,7 @@ function AppWithRedux() {
     return (
         <div className="App">
             <AppBar position="static">
-                <ErrorSnackbar/>
+                {/*<ErrorSnackbar/>*/}
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>
