@@ -203,6 +203,13 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): SetTasks
 
 // Thunk
 
+
+enum ResponseStatuses {
+    success = 0,
+    error = 1,
+    captcha = 10
+}
+
 export const fetchTasksTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'))
@@ -231,7 +238,7 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
     dispatch(setStatusAC('loading'))
     tasksAPI.createTasks(todolistId, title)
         .then(res => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === ResponseStatuses.success) {
                 const task = res.data.data.item
                 dispatch(addTaskAC(task))
                 dispatch(setStatusAC('succeeded'))
@@ -239,14 +246,12 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
                 if (res.data.messages.length) {
                     dispatch(setAppErrorAC(res.data.messages[0]))
                 } else {
-                    dispatch(setAppErrorAC('Some error occurred'))
+                    handleServerAppError(res.data, dispatch)
                 }
-                dispatch(setStatusAC('failed'))
             }
         })
         .catch((error: AxiosError) => {
-            dispatch(setAppErrorAC(error.message))
-            dispatch(setStatusAC('failed'))
+            handleServerNetworkError(error.message, dispatch)
         })
 }
 
@@ -286,18 +291,16 @@ export const updateTaskTC = (domainModel: UpdateDomainTaskModelType, todolistId:
         tasksAPI.updateTasks(todolistId, taskId, apiModel)
 
             .then((res) => {
-                if (res.data.resultCode === 0) {
+                if (res.data.resultCode === ResponseStatuses.success) {
                     let action = updateTaskAC(taskId, domainModel, todolistId)
                     dispatch(action)
                     dispatch(setStatusAC('succeeded'))
                 } else {
-                    dispatch(setAppErrorAC('Some error occurred'))
+                    handleServerAppError(res.data, dispatch)
                 }
-                dispatch(setStatusAC('failed'))
             })
             .catch((error: AxiosError) => {
-                dispatch(setAppErrorAC(error.message))
-                dispatch(setStatusAC('failed'))
+                handleServerNetworkError(error.message, dispatch)
             })
     }
 }
