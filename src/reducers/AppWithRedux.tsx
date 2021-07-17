@@ -1,7 +1,17 @@
 import React, {useCallback, useEffect} from 'react';
 import {Todolist} from "../TodoList";
 import AddItemForm from "../AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
     changeTodoListFilterAC,
@@ -15,6 +25,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 import { TaskStatuses} from "../api/tasks-api";
+import {RequestStatusType} from "./app-reducer";
 
 
 function AppWithRedux() {
@@ -25,6 +36,7 @@ function AppWithRedux() {
 
     const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useDispatch();
 
 
@@ -107,6 +119,7 @@ function AppWithRedux() {
     return (
         <div className="App">
             <AppBar position="static">
+                {status === 'loading' && <LinearProgress color="secondary"/> }
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>
@@ -116,6 +129,7 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "20px 0"}}>

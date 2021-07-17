@@ -6,11 +6,13 @@ import {v1} from "uuid";
 import {todoListReducer} from "../../reducers/tl-reducer";
 import {tasksReducer} from '../../reducers/tasks-reducer';
 import {TaskPriorities, TaskStatuses} from "../../api/tasks-api";
+import {appReducer} from "../../reducers/app-reducer";
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todoLists: todoListReducer
+    todoLists: todoListReducer,
+    app: appReducer
 })
 
 const initialGlobalState: AppRootStateType = {
@@ -69,6 +71,9 @@ const initialGlobalState: AppRootStateType = {
                 completed: false
             }
         ]
+    },
+    app: {
+        status: 'idle'
     }
 };
 
