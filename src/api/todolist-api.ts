@@ -1,10 +1,12 @@
 import axios from "axios";
+import {RequestStatusType} from "../reducers/app-reducer";
 
 export type TodoListType = {
     id: string
     addedDate: string
     order: number
     title: string
+    entityStatus: RequestStatusType
 }
 
 type ResponseType<D> = {

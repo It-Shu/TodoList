@@ -2,7 +2,7 @@ import {AddTodoListActionType, RemoveTodoListActionType, SetTodolistActionType} 
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskModelType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../state/store";
-import {setStatusAC} from "./app-reducer";
+import {setAppErrorAC, SetAppErrorType, SetAppStatusType, setStatusAC} from "./app-reducer";
 
 
 type RemoveTaskACActionType = {
@@ -46,6 +46,8 @@ export type ActionType = RemoveTaskACActionType
     | RemoveTodoListActionType
     | SetTodolistActionType
     | SetTasksActionType
+    | SetAppStatusType
+    | SetAppErrorType
 
 export type TasksStateType = {
     [todoListId: string]: Array<TaskType>
@@ -227,18 +229,25 @@ export const deleteTasksTC = (todolistId: string, taskId: string) => {
     }
 }
 
-export const createTaskTC = (title: string, todolistId: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'))
-        tasksAPI.createTasks(todolistId, title)
-            .then((res) => {
-                let task = res.data.data.item
-                let action = addTaskAC(task)
-                dispatch(action)
+export const createTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionType>) => {
+    dispatch(setStatusAC('loading'))
+    tasksAPI.createTasks(todolistId, title)
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                const task = res.data.data.item
+                dispatch(addTaskAC(task))
                 dispatch(setStatusAC('succeeded'))
-            })
-    }
+            } else {
+                if (res.data.messages.length) {
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                } else {
+                    dispatch(setAppErrorAC('Some error occurred'))
+                }
+                dispatch(setStatusAC('failed'))
+            }
+        })
 }
+
 
 type UpdateDomainTaskModelType = {
     title?: string
@@ -272,11 +281,11 @@ export const updateTaskTC = (domainModel: UpdateDomainTaskModelType, todolistId:
             ...domainModel
         }
 
-            tasksAPI.updateTasks(todolistId, taskId, apiModel)
-                .then(() => {
+        tasksAPI.updateTasks(todolistId, taskId, apiModel)
+            .then(() => {
                 let action = updateTaskAC(taskId, domainModel, todolistId)
                 dispatch(action)
-                    dispatch(setStatusAC('succeeded'))
+                dispatch(setStatusAC('succeeded'))
             })
     }
 }
