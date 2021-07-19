@@ -66,30 +66,30 @@ export const TodoListList = () => {
             <AddItemForm addItem={addTodoList} title={"Todolist title"}/>
         </Grid>
         <Grid container spacing={10}>
-            {todoLists.map(tl => {
-                return ( // key передается наружному элементу, React смотрит на главный тег
+            {
+                todoLists.map(tl => {
+                    return ( // key передается наружному элементу, React смотрит на главный тег
+                        <Grid item key={tl.id}>
+                            <Paper elevation={8} style={{padding: "10px"}}>
+                                <Route exact path={'/'} render={() => <Todolist
+                                    id={tl.id}
+                                    title={tl.title}
+                                    tasks={tasks[tl.id]}
+                                    entityStatus={tl.entityStatus}
+                                    filter={tl.filter}
+                                    removeTask={removeTask}
+                                    removeTodoList={removeTodoList}
+                                    changeFilter={changeFilter}
+                                    addTasks={addTasks}
+                                    changeStatus={changeStatus}
+                                    changeTaskTitle={changeTaskTitle}
+                                    changeTodoListTitle={changeTodoListTitle}
+                                />}/>
+                            </Paper>
+                        </Grid>
 
-                    <Grid item key={tl.id}>
-                        <Paper elevation={8} style={{padding: "10px"}}>
-                            <Route exact path={'/'} render={() => <Todolist
-                                id={tl.id}
-                                title={tl.title}
-                                tasks={tasks[tl.id]}
-                                entityStatus={tl.entityStatus}
-                                filter={tl.filter}
-                                removeTask={removeTask}
-                                removeTodoList={removeTodoList}
-                                changeFilter={changeFilter}
-                                addTasks={addTasks}
-                                changeStatus={changeStatus}
-                                changeTaskTitle={changeTaskTitle}
-                                changeTodoListTitle={changeTodoListTitle}
-                            />}/>
-                        </Paper>
-                    </Grid>
-
-                )
-            })
+                    )
+                })
             }
 
 

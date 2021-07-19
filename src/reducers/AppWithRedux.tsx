@@ -37,8 +37,9 @@ function AppWithRedux() {
         dispatch(fetchTodolistsTC())
     }, [])
 
-    const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todoLists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    // const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todoLists)
+    // const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useDispatch();
 
