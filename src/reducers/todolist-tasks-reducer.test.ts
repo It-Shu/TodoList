@@ -10,7 +10,8 @@ test('ids should be equals', () => {
         title: "new todolist",
         id: 'any',
         order: 0,
-        addedDate: ''
+        addedDate: '',
+        entityStatus: 'loading'
     };
 
     const action = addTodoListAC(todolist);
