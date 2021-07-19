@@ -25,8 +25,10 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 import {TaskStatuses} from "../api/tasks-api";
-import {ErrorStatusType, RequestStatusType} from "./app-reducer";
-import {ErrorSnackbar} from "../ErrorSnackbar";
+import {RequestStatusType} from "./app-reducer";
+import {Route} from 'react-router-dom';
+import {Login} from "../utils/Login";
+import {TodoListList} from "../TodoListList";
 
 
 function AppWithRedux() {
@@ -41,81 +43,72 @@ function AppWithRedux() {
     const dispatch = useDispatch();
 
 
-    // functions for tasks
-    const removeTask = useCallback((taskID: string, todoListID: string) => {
-        dispatch(deleteTasksTC(todoListID, taskID))
-    }, [])
+    /* // functions for tasks
+     const removeTask = useCallback((taskID: string, todoListID: string) => {
+         dispatch(deleteTasksTC(todoListID, taskID))
+     }, [])
 
-    const addTasks = useCallback((taskTitle: string, todoListID: string) => {
-        /* const action = addTaskAC(taskTitle, todoListID)
-         dispatch(action)*/
-        dispatch(createTaskTC(taskTitle, todoListID))
-    }, [])
+     const addTasks = useCallback((taskTitle: string, todoListID: string) => {
+         dispatch(createTaskTC(taskTitle, todoListID))
+     }, [])
 
-    const changeStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
-        /*const action = changeTaskStatusAC(taskID, status, todoListID)
-        dispatch(action)*/
-        dispatch(updateTaskTC({status}, todoListID, taskID))
-    }, [])
+     const changeStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
+         dispatch(updateTaskTC({status}, todoListID, taskID))
+     }, [])
 
-    const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
-        /*const action = changeTaskTitleAC(taskID, title, todoListID)
-        dispatch(action)*/
-        dispatch(updateTaskTC({title}, todoListID, taskID))
-    }, [])
+     const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
+         dispatch(updateTaskTC({title}, todoListID, taskID))
+     }, [])
 
 
-    // functions for todoLists:
-    const removeTodoList = useCallback((todoListID: string) => {
-        /* const action = removeTodoListAC(todoListID)
-         dispatch(action)*/
-        dispatch(deleteTodolistTC(todoListID))
-    }, [])
+     // functions for todoLists:
+     const removeTodoList = useCallback((todoListID: string) => {
+         dispatch(deleteTodolistTC(todoListID))
+     }, [])
 
-    const addTodoList = useCallback((title: string) => {
-        /* const action = addTodoListAC(title)
-         dispatch(action)*/
-        dispatch(createTodolistTC(title))
-    }, [])
+     const addTodoList = useCallback((title: string) => {
+         dispatch(createTodolistTC(title))
+     }, [])
 
-    const changeFilter = useCallback((newFilterValue: FilterValuesType, todoListID: string) => {
-        const action = changeTodoListFilterAC(newFilterValue, todoListID)
-        dispatch(action)
+     const changeFilter = useCallback((newFilterValue: FilterValuesType, todoListID: string) => {
+         const action = changeTodoListFilterAC(newFilterValue, todoListID)
+         dispatch(action)
 
-    }, [dispatch])
+     }, [dispatch])
 
-    const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
-        /* const action = changeTodoListTitleAC(todoListID, title)
-         dispatch(action)*/
-        dispatch(updateTodolistTC(todoListID, title))
-    }, [])
+     const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
+         /!* const action = changeTodoListTitleAC(todoListID, title)
+          dispatch(action)*!/
+         dispatch(updateTodolistTC(todoListID, title))
+     }, [])*/
 
 
     //Container
-    const containerList = todoLists.map(tl => {
 
-        return ( // key передается наружному элементу, React смотрит на главный тег
-            <Grid item key={tl.id}>
-                <Paper elevation={8} style={{padding: "10px"}}>
-                    <Todolist
-                        id={tl.id}
-                        title={tl.title}
-                        tasks={tasks[tl.id]}
-                        entityStatus={tl.entityStatus}
-                        filter={tl.filter}
-                        removeTask={removeTask}
-                        removeTodoList={removeTodoList}
-                        changeFilter={changeFilter}
-                        addTasks={addTasks}
-                        changeStatus={changeStatus}
-                        changeTaskTitle={changeTaskTitle}
-                        changeTodoListTitle={changeTodoListTitle}
-                    />
-                </Paper>
-            </Grid>
-        )
-    })
+    /* const containerList = todoLists.map(tl => {
 
+         return ( // key передается наружному элементу, React смотрит на главный тег
+             <Grid item key={tl.id}>
+                 <Paper elevation={8} style={{padding: "10px"}}>
+                     <Route exact path={'/'} render={()=> <Todolist
+                         id={tl.id}
+                         title={tl.title}
+                         tasks={tasks[tl.id]}
+                         entityStatus={tl.entityStatus}
+                         filter={tl.filter}
+                         removeTask={removeTask}
+                         removeTodoList={removeTodoList}
+                         changeFilter={changeFilter}
+                         addTasks={addTasks}
+                         changeStatus={changeStatus}
+                         changeTaskTitle={changeTaskTitle}
+                         changeTodoListTitle={changeTodoListTitle}
+                     /> }/>
+                 </Paper>
+             </Grid>
+         )
+     })
+ */
 
 // UI
     return (
@@ -135,10 +128,9 @@ function AppWithRedux() {
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "20px 0"}}>
-                    <AddItemForm addItem={addTodoList} title={"Todolist title"}/>
-                </Grid>
-                <Grid container spacing={10}>
-                    {containerList}
+                    <Route exact path={'/'} render={() => <TodoListList/>}/>
+                    <Route path={'/login'} render={() => <Login/>}/>
+                    <Route path={'*'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                 </Grid>
 
             </Container>

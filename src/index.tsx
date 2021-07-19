@@ -7,10 +7,13 @@ import * as serviceWorker from './serviceWorker';
 import AppWithRedux from "./reducers/AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./state/store";
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
     <Provider store={store}>
-    <AppWithRedux />
+        <BrowserRouter>
+            <AppWithRedux/>
+        </BrowserRouter>
     </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
