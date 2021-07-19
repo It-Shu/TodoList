@@ -10,12 +10,12 @@ import {
     Typography
 } from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import { fetchTodolistsTC } from "./tl-reducer";
+import {fetchTodolistsTC} from "./tl-reducer";
 
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 import {RequestStatusType} from "./app-reducer";
-import {Redirect, Route} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import {Login} from "../utils/Login";
 import {TodoListList} from "../TodoListList";
 
@@ -47,10 +47,13 @@ function AppWithRedux() {
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "20px 0"}}>
-                    <Route exact path={'/'} render={() => <TodoListList/>}/>
-                    <Route path={'/login'} render={() => <Login/>}/>
-                    <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
-                    <Redirect from={'*'} to={'/404'}/>
+                    <Switch>
+                        <Route exact path={'/'} render={() => <TodoListList/>}/>
+                        <Route path={'/login'} render={() => <Login/>}/>
+
+                        <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
+                        <Redirect from={'*'} to={'/404'}/>
+                    </Switch>
                 </Grid>
 
             </Container>
