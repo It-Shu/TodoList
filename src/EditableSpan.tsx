@@ -1,15 +1,16 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {TextField} from "@material-ui/core";
+import {RequestStatusType} from "./reducers/app-reducer";
 
 
 export type EditableSpanPropsType = {
     title: string
     changeItem: (title: string) => void
+    entityStatus?: RequestStatusType
 
 }
 
 function EditableSpan(props: EditableSpanPropsType) {
-    console.log('EditableSpan')
 
     const [editMode, setEditMode] = useState<boolean>(false)
     const [title, setTitle] = useState<string>(props.title)

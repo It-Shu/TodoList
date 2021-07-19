@@ -226,10 +226,14 @@ export const deleteTasksTC = (todolistId: string, taskId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'))
         tasksAPI.deleteTasks(todolistId, taskId)
-            .then(() => {
-                let action = removeTaskAC(taskId, todolistId)
-                dispatch(action)
-                dispatch(setStatusAC('succeeded'))
+            .then((res) => {
+                if (res.data.resultCode === ResponseStatuses.success) {
+                    dispatch(removeTaskAC(taskId, todolistId))
+                    dispatch(setStatusAC('succeeded'))
+                }
+            })
+            .catch((err: AxiosError)=>{
+                handleServerNetworkError(err.message, dispatch)
             })
     }
 }

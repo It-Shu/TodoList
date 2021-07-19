@@ -1,8 +1,8 @@
 import {todolistAPI, TodoListType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setAppErrorAC, setStatusAC} from "./app-reducer";
-import { v1 } from "uuid";
 import {AxiosError} from "axios";
+import {handleServerNetworkError} from "../utils/error-utils";
 
 
 export type RemoveTodoListActionType = {
@@ -149,6 +149,14 @@ type ChangeTodosEntityStatusType = ReturnType<typeof changeTodosEntityStatusAC>
 
 // Thunk
 
+
+enum ResponseStatuses {
+    success = 0,
+    error = 1,
+    captcha = 10
+}
+
+
 export const fetchTodolistsTC = () => {
     return (dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'))
@@ -166,7 +174,7 @@ export const createTodolistTC = (title: string) => {
         dispatch(setStatusAC('loading'))
         todolistAPI.createTodolist(title)
             .then((res) => {
-                if (res.data.resultCode === 0) {
+                if (res.data.resultCode === ResponseStatuses.success) {
                     dispatch(addTodoListAC(res.data.data.item))
                     dispatch(setStatusAC('succeeded'))
                 } else {
@@ -179,8 +187,7 @@ export const createTodolistTC = (title: string) => {
                 }
             })
             .catch((err: AxiosError)=>{
-                dispatch(setAppErrorAC(err.message))
-                dispatch(setStatusAC('failed'))
+                handleServerNetworkError(err.message, dispatch)
             })
     }
 }
@@ -190,10 +197,14 @@ export const deleteTodolistTC = (todolistId: string) => {
         dispatch(setStatusAC('loading'))
         dispatch(changeTodosEntityStatusAC(todolistId ,'loading'))
         todolistAPI.deleteTodolist(todolistId)
-            .then(() => {
-                dispatch(removeTodoListAC(todolistId))
-                dispatch(setStatusAC('succeeded'))
-
+            .then((res) => {
+                if (res.data.resultCode === ResponseStatuses.success) {
+                    dispatch(removeTodoListAC(todolistId))
+                    dispatch(setStatusAC('succeeded'))
+                }
+            })
+            .catch((err: AxiosError)=>{
+                handleServerNetworkError(err.message, dispatch)
             })
     }
 }
