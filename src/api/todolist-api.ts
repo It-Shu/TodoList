@@ -44,8 +44,18 @@ export const todolistAPI = {
     }
 }
 
-export const authMeAPI = {
+export type AuthMeType = {
+    id: number
+    email: string
+    login: string
+}
+
+type LoginParamsType = {
+
+}
+
+export const authAPI = {
     login() {
-        return instance.get<ResponseType<any>>('/auth/me')
+        return instance.get<ResponseType<AuthMeType>>('/auth/me')
     }
 }
